@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+body{
+    padding-top: 60px;
+    background-image: linear-gradient(to top right, color-mix(in srgb, #E84855 70%, white 30%), #EFBCD5, color-mix(in srgb, #F9DC5C 65%, white 35%), #3185FC);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    height: 100vh;
+
+}
+
+nav{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+button{
+    border-radius: 9999px !important;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+}
