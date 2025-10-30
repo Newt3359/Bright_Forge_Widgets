@@ -1,0 +1,16 @@
+services:
+  postgres-db:
+    container_name: Capstone
+    image: postgres # use latest official postgres version
+    restart: always
+    environment:
+      POSTGRES_USER: bfw_dev
+      POSTGRES_PASSWORD: bfw_dev12345
+      POSTGRES_DB: Widget
+      POSTGRES_HOST_AUTH_METHOD: password
+    ports:
+      - "5450:5432"
+
+volumes:
+  postgresql_data:
+    driver: local

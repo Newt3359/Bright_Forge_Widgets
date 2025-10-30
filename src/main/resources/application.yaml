@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: BrightForgeWidget
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5450/Widget
+    driver-class-name: org.postgresql.Driver
+    username: bfw_dev
+    password: bfw_dev12345
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
