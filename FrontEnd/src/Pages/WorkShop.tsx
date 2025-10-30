@@ -10,20 +10,34 @@ function WorkShop(){
     const [widgets, setWidgets] = useState<Widget[]>(WidgetMockDB)
     const [edit, setEdit] = useState(true)
     const [remove, setRemove] = useState(true)
+    const [add, setAdd] = useState(false)
 
-    const handleEdit = (id: number) => {
+    const handleEdit = (widget : Widget) => {
+
+    }
+
+    const handleDelete = (widget : Widget) => {
 
     }
 
-    const handleDelete = (id: number) => {
-
+    const handleNewWidget =() =>{
+        setAdd(!add)
     }
+
+
 
     return(
         <>
-        <h1>Workshop</h1>
+        <h1 className={"flex justify-center content-center"}>Workshop</h1>
             <WidgetManager>
-                <AddWidgetForm/>
+                <div className={"flex justify-center content-center"}>
+                    <button onClick={() => handleNewWidget()} className={"border-2 bg-[#3185FC] text-white shadow-md p-0.5 m-2 w-36 h-12"}>Add Widget</button>
+                </div>
+                {add && (
+                    <div className={"flex content-center justify-center"}>
+                        <AddWidgetForm handleNewWidget={handleNewWidget}/>
+                    </div>
+                )}
                 <div className={"flex justify-center items-center"}>
                     {widgets.map(widget =>
                     <WidgetCards widget={widget}

@@ -4,7 +4,6 @@ import * as React from "react";
 
 interface WidgetCardProps {
     widget: Widget
-
     onBuy?: (widget:Widget) => void;
     onEdit?: (widget:Widget) => void;
     onDelete?: (widget:Widget) => void;
@@ -20,7 +19,7 @@ export const WidgetCards : React.FC<WidgetCardProps> = ({
     return(
         <>
             <Card style={{width: '20rem', height: "18rem" }} className={"m-4 border border-black shadow-md"}>
-                <img src={widget.icon} className={"w-8 h-10 flex "} alt={widget.title}/>
+                <img src={widget.icon} className={"w-10 h-10 flex "} alt={widget.title}/>
                 <p className={"absolute top-1 right-1 text-right"}>{widget.colors.join(" ")}</p>
                 <CardBody>
                     <div>
@@ -34,22 +33,25 @@ export const WidgetCards : React.FC<WidgetCardProps> = ({
                         <p className={"absolute bottom-7 right-5"}><label>Qty:</label>{widget.quantity}</p>
                     </div>
                 </CardBody>
-                <div>
+                <div className={"flex justify-center content-center"}>
                     {onBuy && (
                         <button
                         onClick={() => onBuy(widget)}
+                        className={"border-2 bg-[#3185FC] text-white shadow-md w-20 p-1 m-2"}
                         >Buy
                         </button>
                     )}
                     {onEdit && (
                         <button
                             onClick={() => onEdit(widget)}
+                            className={"border-2 bg-[#3185FC] text-white shadow-md p-1 m-2 w-20"}
                         >Edit
                         </button>
                     )}
                     {onDelete && (
                         <button
                             onClick={() => onDelete(widget)}
+                            className={"border-2 bg-[#3185FC] text-white shadow-md w-20 p-1 m-2"}
                         >Delete
                         </button>
                     )}

@@ -23,3 +23,11 @@ export const widgetFormSubmit = async (widget:Widget): Promise<Widget> =>{
     const result = await axios.post('/api/widget', widget)
     return result.data
 }
+
+export const editWidgetSubmit = async (widget : Widget) : Promise<number> => {
+    console.log(widget)
+    const result = await axios.patch('/api/widget/' + widget.id, widget)
+    console.log(result.status)
+    return result.status
+
+}
