@@ -12,12 +12,12 @@ function WorkShop(){
     const [remove, setRemove] = useState(true)
     const [add, setAdd] = useState(false)
 
-    const handleEdit = (widget : Widget) => {
+    const handleEdit = (id: number) => {
 
     }
 
-    const handleDelete = (widget : Widget) => {
-
+    const handleDelete = (id: number) => {
+        setWidgets(prev => prev.filter(widget => widget.id !== id))
     }
 
     const handleNewWidget =() =>{
@@ -40,9 +40,9 @@ function WorkShop(){
                 )}
                 <div className={"flex justify-center items-center"}>
                     {widgets.map(widget =>
-                    <WidgetCards widget={widget}
-                    onEdit={(w) => handleEdit(w.id)}
-                    onDelete={(w) => handleDelete(w.id)}/>)}
+                    <WidgetCards key={widget.id} widget={widget}
+                    onEdit={(widget) => handleEdit(widget.id)}
+                    onDelete={(widget) => handleDelete(widget.id)}/>)}
                 </div>
             </WidgetManager>
         </>

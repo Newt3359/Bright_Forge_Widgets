@@ -18,6 +18,15 @@ export const ImageUpload = () => {
         const selectedFile = event.target.files?.[0];
         if (!selectedFile) return;
 
+        const MAX_SIZE_MB = 1
+        const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
+
+        if (selectedFile.size > MAX_SIZE_BYTES){
+            alert("Image must be 1MB or less")
+            event.target.value = ""
+            return;
+        }
+
         setCurrentImage(selectedFile)
         const previewURL = URL.createObjectURL(selectedFile)
         setPreviewImage(URL.createObjectURL(selectedFile))
@@ -102,7 +111,7 @@ export const ImageUpload = () => {
             )}
 
             {previewImage && (
-                <div className={"max-h-32 max-w-52 m-6"}>
+                <div className={"max-h-18 max-w-20 m-1 mb-5"}>
                     <label>Preview:
                     <img src={previewImage} alt={""}/>
                     </label>

@@ -3,7 +3,9 @@ package swf.army.mil.brightforgewidget.widget;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Widget_Info")
@@ -27,11 +29,16 @@ public class WidgetInfo {
     @Column(nullable = false)
     private String slug;
 
-    @OneToMany(mappedBy = "widget", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Colors> colors = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "widget_color",
+            joinColumns = @JoinColumn(name = "widget_id"),
+            inverseJoinColumns = @JoinColumn(name = "color_id")
+    )
+    private Set<Colors> colors = new HashSet<>();
 
     @OneToMany(mappedBy = "widget", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Image> images = new ArrayList<>();
+    private List<Images> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "widget", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Warehouse> warehouseLot = new ArrayList<>();

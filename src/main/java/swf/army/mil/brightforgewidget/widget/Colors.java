@@ -2,6 +2,9 @@ package swf.army.mil.brightforgewidget.widget;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Colors")
 public class Colors {
@@ -19,19 +22,18 @@ public class Colors {
     @Column(name = "Color_Hex", length = 7)
     private String hex;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "widget_color_id_fk", nullable = false)
-    private WidgetInfo widget;
+    @ManyToMany(mappedBy = "colors")
+    private Set<WidgetInfo> widgets = new HashSet<>();
 
     public Colors() {
     }
 
-    public Colors(Integer colorId, String code, String label, String hex, WidgetInfo widget) {
+    public Colors(Integer colorId, String code, String label, String hex, Set<WidgetInfo> widgets) {
         ColorId = colorId;
         this.code = code;
         this.label = label;
         this.hex = hex;
-        this.widget = widget;
+        this.widgets = widgets;
     }
 
     public Integer getColorId() {
@@ -66,11 +68,11 @@ public class Colors {
         this.hex = hex;
     }
 
-    public WidgetInfo getWidget() {
-        return widget;
+    public Set<WidgetInfo> getWidgets() {
+        return widgets;
     }
 
-    public void setWidget(WidgetInfo widget) {
-        this.widget = widget;
+    public void setWidgets(Set<WidgetInfo> widgets) {
+        this.widgets = widgets;
     }
 }

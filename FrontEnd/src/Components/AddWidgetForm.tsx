@@ -42,13 +42,13 @@ export const AddWidgetForm = ({handleNewWidget}: AddWidgetFormProps) => {
 
     return (
         <>
-            <div className={"bg-white w-96 flex justify-center content-center border-2 shadow-md"}>
+            <div className={"bg-white flex justify-center content-center border-2 shadow-md"}>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <ImageUpload/>
                     </div>
 
-                    <div>
+                    <div className={"mt-3"}>
                         <label className={"m-1"}>Title:
                             <input
                                 className={"placeholder:text-gray-400 placeholder:font-light border-1 ml-0.5"}
