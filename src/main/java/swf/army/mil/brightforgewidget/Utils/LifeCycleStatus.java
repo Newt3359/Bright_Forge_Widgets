@@ -1,4 +1,4 @@
-package swf.army.mil.brightforgewidget.widget;
+package swf.army.mil.brightforgewidget.Utils;
 
 public enum LifeCycleStatus {
 

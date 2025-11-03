@@ -1,7 +1,8 @@
-package swf.army.mil.brightforgewidget.widget;
+package swf.army.mil.brightforgewidget.Entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -93,5 +94,29 @@ public class WidgetInfo {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public Set<Colors> getColors() {
+        return colors;
+    }
+
+    public void setColors(Set<Colors> colors) {
+        this.colors = colors;
+    }
+
+    public List<Images> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Images> images) {
+        this.images = images;
+    }
+
+    public List<Warehouse> getWarehouseLot() {
+        return warehouseLot;
+    }
+
+    public void setWarehouseLot(List<Warehouse> warehouseLot) {
+        this.warehouseLot = warehouseLot;
     }
 }
