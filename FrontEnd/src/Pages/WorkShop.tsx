@@ -2,12 +2,12 @@
 import {AddWidgetForm} from "../Components/AddWidgetForm.tsx";
 import {WidgetManager} from "../Utils/WidgetContext.tsx";
 import {WidgetCards} from "../Components/WidgetCards.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import type {Widget} from "../Utils/Widget.ts";
-import {WidgetMockDB} from "../Utils/WidgetMockDB.ts";
+import {getAllWidgets} from "../Utils/YellowPages.ts";
 function WorkShop(){
 
-    const [widgets, setWidgets] = useState<Widget[]>(WidgetMockDB)
+    const [widgets, setWidgets] = useState<Widget[]>([])
     const [edit, setEdit] = useState(true)
     const [remove, setRemove] = useState(true)
     const [add, setAdd] = useState(false)
@@ -23,6 +23,19 @@ function WorkShop(){
     const handleNewWidget =() =>{
         setAdd(!add)
     }
+
+    useEffect(() => {
+        const fetchWidgets = async () => {
+            try {
+                const response = await getAllWidgets()
+                console.log(response)
+                setWidgets(response)
+            }catch (err){
+                console.log(err)
+            }
+        }
+        fetchWidgets()
+    }, [])
 
 
 

@@ -1,4 +1,4 @@
-import {AVAILABLE_COLORS, type Widget} from "./Widget.ts";
+import {ColorTypes,type Widget} from "./Widget.ts";
 
 
 export const widgetChecker = (widget: Widget) : string[] => {
@@ -12,20 +12,21 @@ export const widgetChecker = (widget: Widget) : string[] => {
         errors.push("Description is required")
     }
 
-    if (!widget.icon.trim()){
-        errors.push("Icon or image required")
-    }
+    // if (!widget.image[0].imgUrl.trim()){
+    //     errors.push("Icon or image required")
+    // }
 
-    if (widget.price <= 0){
-        errors.push("price must be grater than 0$")
+    if (widget.rating <= 0 || widget.rating >5){
+        errors.push("rating must be above 0 and below 5")
     }
 
     if (widget.colors.length === 0){
         errors.push("Must select one color")
     }
 
-    if (widget.colors.some((c) => !AVAILABLE_COLORS.includes(c))){
-        errors.push("Color Selection is invalid")
-    }
+    // @ts-ignore
+    // if (widget.colors.some((c) => !ColorTypes.includes(c.label))){
+    //     errors.push("Color Selection is invalid")
+    // }
     return errors
 }

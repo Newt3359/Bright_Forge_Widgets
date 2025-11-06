@@ -16,21 +16,42 @@ export const WidgetCards : React.FC<WidgetCardProps> = ({
     onDelete,
     }) =>{
 
+    const {
+        title,
+        description,
+        rating,
+        warehouseLot: [{quantity}],
+    } = widget;
+
+    // {widget.colors.join(" ")}
     return(
         <>
             <Card style={{width: '20rem', height: "18rem" }} className={"m-4 border border-black shadow-md"}>
-                <img src={widget.icon} className={"w-10 h-10 flex "} alt={widget.title}/>
-                <p className={"absolute top-1 right-1 text-right"}>{widget.colors.join(" ")}</p>
+
+                {widget.image.map(img => (
+                    <img
+                        key={img.imageID}
+                        src={`http://localhost:8080${img.imgUrl}`}
+                        alt={widget.title}
+                        className={"h-24 w-24"}
+                    />
+                ))}
+
+                <div className={"absolute top-1 right-1  m-1 text-right inline-flex gap-1"}>
+                {widget.colors.map(color =>  (
+                <p key={color.ColorId} >{color.label}</p>
+                ))}
+                </div>
                 <CardBody>
                     <div>
-                        <h3>{widget.title}</h3>
+                        <h3>{title}</h3>
                     </div>
                     <div>
-                        <p>{widget.description}</p>
+                        <p>{description}</p>
                     </div>
                     <div>
-                        <p className={"absolute bottom-7"}><label>Price:</label>{widget.price}</p>
-                        <p className={"absolute bottom-7 right-5"}><label>Qty:</label>{widget.quantity}</p>
+                        <p className={"absolute bottom-7"}><label>Rating:</label>{rating}</p>
+                        <p className={"absolute bottom-7 right-5"}><label>Qty:</label>{quantity}</p>
                     </div>
                 </CardBody>
                 <div className={"flex justify-center content-center"}>

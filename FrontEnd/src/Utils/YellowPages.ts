@@ -31,3 +31,11 @@ export const editWidgetSubmit = async (widget : Widget) : Promise<number> => {
     return result.status
 
 }
+
+export const getAllWidgets = async () : Promise<any> => {
+    const result = await axios.get('/api/widget')
+    console.log(result.status)
+    return result.data
+}
+
+

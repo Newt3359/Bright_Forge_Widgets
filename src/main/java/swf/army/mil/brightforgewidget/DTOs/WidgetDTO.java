@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Set;
 
 public record WidgetDTO(
+        Long id,
         String title,
         String description,
-        Float rating,
+        Double rating,
         String slug,
         Set <ColorDTO> colors,
         List<WarehouseDTO> warehouseLot,

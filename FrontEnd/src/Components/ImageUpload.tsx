@@ -32,7 +32,8 @@ export const ImageUpload = () => {
         setPreviewImage(URL.createObjectURL(selectedFile))
         setProgress(0)
 
-        setWidget({...widget, icon:previewURL})
+        setWidget({...widget, image: [{imgUrl:previewURL}]})
+
     }
 
     const upload = () => {

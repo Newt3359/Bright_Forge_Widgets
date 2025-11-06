@@ -1,11 +1,13 @@
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
 import {AppNavBar} from "./Components/AppNavBar.tsx";
 import SplashPage from "./Pages/SplashPage.tsx";
-import GetWidget from "./Pages/GetWidget.tsx";
 import WorkShop from "./Pages/WorkShop.tsx";
+import GetWidget from "./Pages/GetWidget.tsx";
 
 
-function App() {
+
+
+function App () {
 
 
   return (

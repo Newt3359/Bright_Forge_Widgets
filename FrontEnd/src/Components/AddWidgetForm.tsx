@@ -3,8 +3,9 @@ import {widgetFormSubmit} from "../Utils/YellowPages.ts";
 import {ImageUpload} from "./ImageUpload.tsx";
 import {useWidget} from "../Utils/WidgetContext.tsx";
 import {widgetChecker} from "../Utils/WidgetChecker.ts";
+import {ColorTypes} from "../Utils/Widget.ts";
 
-import {AVAILABLE_COLORS, type Color} from "../Utils/Widget.ts";
+
 
 
 interface AddWidgetFormProps {
@@ -21,23 +22,47 @@ export const AddWidgetForm = ({handleNewWidget}: AddWidgetFormProps) => {
         event.preventDefault()
 
 
+        const updatedWidget = ({
+            ...widget,
+            slug: widget.title + "-" + widget.rating,
+
+            warehouseLot: [
+                {
+                    ...widget.warehouseLot[0],
+                    created: Date.now().toString(),
+                    lifeCycleStatus: "Active"
+                }
+            ]
+            // image: [
+            //     {
+            //         ...widget.image[0],
+            //         imageId:
+            //     }
+            // ]
+        });
+
+
         const errors = widgetChecker(widget)
         if (errors.length > 0) {
             alert("Fix the following errors:\n" + errors.join("\n"))
             return
         }
-        console.log(widget)
+        setWidget(updatedWidget)
+        console.log(updatedWidget)
         await widgetFormSubmit(widget)
     }
 
-    const handleColorChange = (color: Color) => {
-        const alreadySelected = widget.colors.includes(color);
+    const handleColorChange = (colorLabel: string) => {
+        const colorObject = ColorTypes.find (c => c.label === colorLabel)
+        if (!colorObject) return;
+
+        const alreadySelected = widget.colors.some(c => c.label === colorLabel)
 
         const updatedColors = alreadySelected
-            ? widget.colors.filter((c) => c !== color)
-            : [...widget.colors, color];
+        ? widget.colors.filter(c => c.label !== colorLabel)
+            : [...widget.colors, colorObject]
 
-        setWidget({...widget, colors: updatedColors});
+        setWidget({...widget, colors: updatedColors})
     };
 
     return (
@@ -73,13 +98,15 @@ export const AddWidgetForm = ({handleNewWidget}: AddWidgetFormProps) => {
                     </div>
 
                     <div>
-                        <label> Price:
+                        <label>Rating:
                             <input
-                                className={"border-1 m-1"}
-                                type={"number"}
-                                step={"0.01"}
-                                value={widget.price}
-                                onChange={(e) => setWidget({...widget, price: Number(e.target.value)})}
+                            className={"border-1 m-0.5"}
+                            value={widget.rating}
+                            onChange={(e) => {const updatedRating = Number (e.target.value); setWidget({...widget, rating: updatedRating})}}
+                            type={"number"}
+                            min={0}
+                            max={5}
+                            step={0.01}
                             />
                         </label>
                     </div>
@@ -89,22 +116,22 @@ export const AddWidgetForm = ({handleNewWidget}: AddWidgetFormProps) => {
                             <input
                                 className={"border-1 m-1"}
                                 type={"number"}
-                                value={widget.quantity}
-                                onChange={(e) => setWidget({...widget, quantity: Number(e.target.value)})}
+                                value={widget.warehouseLot[0].quantity}
+                                onChange={(e) => { const updatedQuantity = Number(e.target.value); setWidget ({...widget, warehouseLot: [{...widget.warehouseLot[3], quantity: updatedQuantity}]})}}
                             />
                         </label>
                     </div>
 
                     <div>
                         <label>Colors:
-                            {AVAILABLE_COLORS.map((color) => (
-                                <label key={color}>
+                            {ColorTypes.map((color) => (
+                                <label key={color.ColorId}>
                                     <input
                                         type="checkbox"
                                         checked={widget.colors.includes(color)}
-                                        onChange={() => handleColorChange(color)}
+                                        onChange={() => handleColorChange(color.label)}
                                         className={"m-1"}
-                                    />{color}
+                                    />{color.label}
                                 </label>
                             ))}
                         </label>
@@ -123,3 +150,9 @@ export const AddWidgetForm = ({handleNewWidget}: AddWidgetFormProps) => {
         </>
     )
 }
+
+// <div>
+//     <label>
+//         <input/>
+//     </label>
+// </div>

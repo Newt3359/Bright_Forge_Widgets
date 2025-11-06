@@ -1,6 +1,7 @@
-import type {Widget} from "./Widget.ts";
+
 import * as React from "react";
 import {createContext, useContext, useState} from "react";
+import type {Widget} from "./Widget.ts";
 
 
 type WidgetContextType = {
@@ -15,10 +16,27 @@ export function WidgetManager({children}: {children: React.ReactNode}){
         id: 0,
         title: "",
         description: "",
-        icon: "",
-        price: 0,
-        quantity: 0,
+        rating: 0,
+        slug: "",
         colors: [],
+        image: [
+            {
+                imageId: 0,
+                imgUrl: "0"
+            }
+        ],
+        warehouseLot: [
+            {
+                lotNumber: 0,
+                created: "",
+                lastEdit: "",
+                lifeCycleStatus: "",
+                quantity: 0
+            }
+        ]
+
+
+
     })
 
     return(

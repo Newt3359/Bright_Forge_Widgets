@@ -25,7 +25,7 @@ public class WidgetInfo {
     @DecimalMin(value = "1.0", message = "Rating must be at least a 1.0")
     @DecimalMax(value = "5.0", message = "Rating cannot exceed 5.0")
     @Column (nullable = false)
-    private Float rating;
+    private Double rating;
 
     @Column(nullable = false)
     private String slug;
@@ -48,7 +48,7 @@ public class WidgetInfo {
 
     }
 
-    public WidgetInfo(Long id, String title, String description, Float rating, String slug) {
+    public WidgetInfo(Long id, String title, String description, Double rating, String slug) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -80,11 +80,11 @@ public class WidgetInfo {
         this.description = description;
     }
 
-    public Float getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Float rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

@@ -28,6 +28,13 @@ public class Colors {
     public Colors() {
     }
 
+    public Colors(Integer colorId, String code, String label, String hex) {
+        ColorId = colorId;
+        this.code = code;
+        this.label = label;
+        this.hex = hex;
+    }
+
     public Colors(Integer colorId, String code, String label, String hex, Set<WidgetInfo> widgets) {
         ColorId = colorId;
         this.code = code;
