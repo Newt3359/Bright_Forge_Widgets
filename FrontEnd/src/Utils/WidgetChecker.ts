@@ -1,4 +1,4 @@
-import {ColorTypes,type Widget} from "./Widget.ts";
+import {type Widget} from "./Widget.ts";
 
 
 export const widgetChecker = (widget: Widget) : string[] => {

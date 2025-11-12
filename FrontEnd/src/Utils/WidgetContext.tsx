@@ -19,15 +19,9 @@ export function WidgetManager({children}: {children: React.ReactNode}){
         rating: 0,
         slug: "",
         colors: [],
-        image: [
-            {
-                imageId: 0,
-                imgUrl: "0"
-            }
-        ],
+        image: [],
         warehouseLot: [
             {
-                lotNumber: 0,
                 created: "",
                 lastEdit: "",
                 lifeCycleStatus: "",

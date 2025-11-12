@@ -11,7 +11,8 @@ public class Warehouse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer lotNumber;
+    @Column(name = "lot_number")
+    private Long lotNumber;
 
     @Column(name = "Created_at_Date", nullable = false)
     private Instant created;
@@ -33,7 +34,7 @@ public class Warehouse {
     public Warehouse() {
     }
 
-    public Warehouse(Integer lotNumber, Instant created, Instant lastEdit, int quantity, LifeCycleStatus lifeCycleStatus, WidgetInfo widget) {
+    public Warehouse(Long lotNumber, Instant created, Instant lastEdit, int quantity, LifeCycleStatus lifeCycleStatus, WidgetInfo widget) {
         this.lotNumber = lotNumber;
         this.created = created;
         this.lastEdit = lastEdit;
@@ -42,11 +43,11 @@ public class Warehouse {
         this.widget = widget;
     }
 
-    public Integer getLotNumber() {
+    public Long getLotNumber() {
         return lotNumber;
     }
 
-    public void setLotNumber(Integer lotNumber) {
+    public void setLotNumber(Long lotNumber) {
         this.lotNumber = lotNumber;
     }
 

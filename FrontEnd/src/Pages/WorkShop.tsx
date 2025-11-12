@@ -8,12 +8,13 @@ import {getAllWidgets} from "../Utils/YellowPages.ts";
 function WorkShop(){
 
     const [widgets, setWidgets] = useState<Widget[]>([])
-    const [edit, setEdit] = useState(true)
+    const [edit, setEdit] = useState(false)
     const [remove, setRemove] = useState(true)
     const [add, setAdd] = useState(false)
+    const [selectedWidget, setSelectedWidget] = useState<Widget|null>(null)
 
     const handleEdit = (id: number) => {
-
+        setEdit(!edit)
     }
 
     const handleDelete = (id: number) => {
@@ -51,12 +52,15 @@ function WorkShop(){
                         <AddWidgetForm handleNewWidget={handleNewWidget}/>
                     </div>
                 )}
-                <div className={"flex justify-center items-center"}>
+                <div className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center items-center"}>
                     {widgets.map(widget =>
                     <WidgetCards key={widget.id} widget={widget}
                     onEdit={(widget) => handleEdit(widget.id)}
                     onDelete={(widget) => handleDelete(widget.id)}/>)}
                 </div>
+                {edit && (
+                    <AddWidgetForm handleNewWidget={handleNewWidget}/>
+                )}
             </WidgetManager>
         </>
     )

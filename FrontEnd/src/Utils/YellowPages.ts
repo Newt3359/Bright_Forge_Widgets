@@ -2,19 +2,6 @@ import axios from "axios";
 import type {Widget} from "./Widget.ts";
 
 
-export const uploadImage = async (file: File, onUploadProgress: any):Promise<any> =>{
-    let formData = new FormData();
-
-    formData.append("file", file)
-
-    return axios.post("/upload", formData, {
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-        onUploadProgress
-    })
-}
-
 export const getFiles = () : Promise<any> => {
     return axios.get("/files")
 }
@@ -37,5 +24,12 @@ export const getAllWidgets = async () : Promise<any> => {
     console.log(result.status)
     return result.data
 }
+
+export const uploadImage = (formData: FormData, onUploadProgress?: (event: any) => void) => {
+    return axios.post(`/api/widget/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress,
+    });
+};
 
 

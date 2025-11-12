@@ -21,7 +21,7 @@ export type Widget = {
         imgUrl: string;
     }[];
     warehouseLot: {
-        lotNumber: number;
+        lotNumber?: number;
         created: string;
         lastEdit: string | null;
         quantity: number;

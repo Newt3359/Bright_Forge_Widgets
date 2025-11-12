@@ -23,14 +23,14 @@ export const WidgetCards : React.FC<WidgetCardProps> = ({
         warehouseLot: [{quantity}],
     } = widget;
 
-    // {widget.colors.join(" ")}
+
     return(
         <>
             <Card style={{width: '20rem', height: "18rem" }} className={"m-4 border border-black shadow-md"}>
 
                 {widget.image.map(img => (
                     <img
-                        key={img.imageID}
+                        key={img.imageId}
                         src={`http://localhost:8080${img.imgUrl}`}
                         alt={widget.title}
                         className={"h-24 w-24"}

@@ -8,7 +8,8 @@ public class Images {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer imageId;
+    @Column(name = "image_id")
+    private Long imageId;
 
     @Column(name = "Image_URL", nullable = false)
     private String imgUrl;
@@ -20,17 +21,17 @@ public class Images {
     public Images() {
     }
 
-    public Images(Integer imageId, String imgUrl, WidgetInfo widget) {
+    public Images(Long imageId, String imgUrl, WidgetInfo widget) {
         this.imageId = imageId;
         this.imgUrl = imgUrl;
         this.widget = widget;
     }
 
-    public Integer getImageId() {
+    public Long getImageId() {
         return imageId;
     }
 
-    public void setImageId(Integer imageId) {
+    public void setImageId(Long imageId) {
         this.imageId = imageId;
     }
 

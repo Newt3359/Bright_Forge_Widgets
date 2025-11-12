@@ -20,11 +20,7 @@ spring:
 server:
   port: 8080
 
-file:
-  upload-dir: src/main/resources/static/uploads
-  max-size: 1MB
-  allowed-types:
-    -image/png
-    -image/jpeg
+upload:
+  dir: static/uploads
 
 

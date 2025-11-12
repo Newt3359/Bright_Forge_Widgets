@@ -5,7 +5,7 @@ import swf.army.mil.brightforgewidget.Utils.LifeCycleStatus;
 import java.time.Instant;
 
 public record WarehouseDTO(
-        Integer lotNumber,
+        Long lotNumber,
         Instant created,
         Instant lastEdit,
         int quantity,

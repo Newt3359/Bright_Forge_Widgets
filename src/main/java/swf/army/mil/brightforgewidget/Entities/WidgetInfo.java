@@ -22,7 +22,7 @@ public class WidgetInfo {
     @Column (nullable = false)
     private String description;
 
-    @DecimalMin(value = "1.0", message = "Rating must be at least a 1.0")
+    @DecimalMin(value = "0.1", message = "Rating must be at least a 1.0")
     @DecimalMax(value = "5.0", message = "Rating cannot exceed 5.0")
     @Column (nullable = false)
     private Double rating;
