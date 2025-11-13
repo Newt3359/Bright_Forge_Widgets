@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -81,7 +83,7 @@ public class WidgetService {
 
     public ImageDTO saveImage(MultipartFile file, WidgetInfo widget) throws IOException {
 
-        String filename = file.getOriginalFilename();
+        String filename = LocalDateTime.now() + file.getOriginalFilename();
         Path path = Paths.get(uploadDir, filename);
         Files.copy(file.getInputStream(), path);
 

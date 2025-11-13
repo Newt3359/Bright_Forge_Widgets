@@ -12,7 +12,7 @@ FROM widget_info WHERE slug = 'Tycoon-2.6';
 
 INSERT INTO images (image_url, widget_image_fk)
 SELECT '/uploads/zap.png', id
-FROM widget_info WHERE slug = 'Zeus-4.7''';
+FROM widget_info WHERE slug = 'Zeus-4.7';
 
 INSERT INTO images (image_url, widget_image_fk)
 SELECT '/uploads/zap.png', id
