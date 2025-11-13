@@ -2,18 +2,19 @@ import type {Widget} from "../Utils/Widget.ts"
 import {Card, CardBody} from "reactstrap";
 import * as React from "react";
 
+
 interface WidgetCardProps {
     widget: Widget
-    onBuy?: (widget:Widget) => void;
+    onBuy?: (widget: Widget) => void;
     onEdit?: (widget:Widget) => void;
     onDelete?: (widget:Widget) => void;
+
 }
 
 export const WidgetCards : React.FC<WidgetCardProps> = ({
     widget,
     onBuy,
     onEdit,
-    onDelete,
     }) =>{
 
     const {
@@ -44,6 +45,9 @@ export const WidgetCards : React.FC<WidgetCardProps> = ({
                 </div>
                 <CardBody>
                     <div>
+                        <p className={"mb-0 text-xs"}>{widget.warehouseLot[0].lifeCycleStatus}</p>
+                    </div>
+                    <div>
                         <h3>{title}</h3>
                     </div>
                     <div>
@@ -64,16 +68,11 @@ export const WidgetCards : React.FC<WidgetCardProps> = ({
                     )}
                     {onEdit && (
                         <button
-                            onClick={() => onEdit(widget)}
+                            onClick={() => {
+                                onEdit(widget)
+                            }}
                             className={"border-2 bg-[#3185FC] text-white shadow-md p-1 m-2 w-20"}
                         >Edit
-                        </button>
-                    )}
-                    {onDelete && (
-                        <button
-                            onClick={() => onDelete(widget)}
-                            className={"border-2 bg-[#3185FC] text-white shadow-md w-20 p-1 m-2"}
-                        >Delete
                         </button>
                     )}
                 </div>

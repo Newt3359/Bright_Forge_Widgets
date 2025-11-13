@@ -1,22 +1,47 @@
 import * as React from "react";
-import {uploadImage, widgetFormSubmit} from "../Utils/YellowPages.ts";
+import {getAllWidgets, updateWidget, uploadImage, widgetFormSubmit} from "../Utils/YellowPages.ts";
 import {ImageUpload} from "./ImageUpload.tsx";
 import {useWidget} from "../Utils/WidgetContext.tsx";
 import {widgetChecker} from "../Utils/WidgetChecker.ts";
-import {ColorTypes} from "../Utils/Widget.ts";
+import {ColorTypes, LifeCycleTypes, type Widget} from "../Utils/Widget.ts";
+import {useEffect} from "react";
 
 
 
 
 interface AddWidgetFormProps {
     handleNewWidget: () => void;
+    widgetToEdit?: Widget | null;
+    onEdit?: (widget:Widget) => void
 }
 
-export const AddWidgetForm = ({ handleNewWidget }: AddWidgetFormProps) => {
+export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onEdit }: AddWidgetFormProps) => {
     const { widget, setWidget } = useWidget();
     const [selectedFile, setSelectedFile] = React.useState<File>();
     const [previewImage, setPreviewImage] = React.useState<string>();
     const [progress, setProgress] = React.useState<number>(0);
+
+    useEffect(() => {
+        if (widgetToEdit) {
+            setWidget(widgetToEdit)
+        }else {
+            setWidget({
+                id: 0,
+                title:"",
+                description:"",
+                rating:0,
+                slug: "",
+                colors:[],
+                image:[],
+                warehouseLot: [{
+                    quantity: 0,
+                    created: "",
+                    lastEdit: null,
+                    lifeCycleStatus: ""
+                }]
+            })
+        }
+    }, [widgetToEdit]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -55,15 +80,99 @@ export const AddWidgetForm = ({ handleNewWidget }: AddWidgetFormProps) => {
                 });
             }
 
-            // 5️⃣ Update context/state with new widget
+
             setWidget(createdWidget);
 
-            // ✅ Optionally reset form or show success message
             alert("Widget created successfully!");
         } catch (err: any) {
             console.error("Error creating widget:", err);
             alert("Failed to create widget. Check console for details.");
         }
+
+        setWidget({
+            id: 0,
+            title:"",
+            description:"",
+            rating:0,
+            slug: "",
+            colors:[],
+            image:[],
+            warehouseLot: [{
+                quantity: 0,
+                created: "",
+                lastEdit: null,
+                lifeCycleStatus: ""
+            }]
+        })
+
+
+    };
+
+    const handleEditedWidget = async (event: React.FormEvent) => {
+        event.preventDefault()
+
+        const errors = widgetChecker(widget);
+        if (errors.length > 0 ){
+            alert("Fix the following errors:\n" + errors.join("\n"))
+            return;
+        }
+
+        const payload = {
+            ...widget,
+            widget: widget.id,
+            warehouseLot: [
+                {
+                ...(widget.warehouseLot?.[0] || {}),
+                lastEdit: Date.now().toString()
+                },
+            ],
+        }
+        console.log(payload)
+        try {
+            const updatedWidget = await  updateWidget(payload);
+            if (selectedFile) {
+                const formData = new FormData();
+                formData.append("file", selectedFile);
+                formData.append("widgetId", updatedWidget.id.toString());
+                await uploadImage(formData, (progressEvent) => {
+                    const percent = Math.round((100 * progressEvent.loaded) / progressEvent.total);
+                    setProgress(percent);
+                });
+            }
+
+            setWidget(updatedWidget);
+            alert("Widget updated successfully!")
+        } catch (err: any) {
+            console.error("Error updating widget:", err);
+            alert("Failed to update widget. Check console for details.");
+        }
+        setWidget({
+            id: 0,
+            title:"",
+            description:"",
+            rating:0,
+            slug: "",
+            colors:[],
+            image:[],
+            warehouseLot: [{
+                quantity: 0,
+                created: "",
+                lastEdit: null,
+                lifeCycleStatus: ""
+            }]
+        })
+    }
+
+    const handleLifeCycleChange = (newStatus: string) => {
+        setWidget({
+            ...widget,
+            warehouseLot: [
+                {
+                    ...(widget.warehouseLot?.[0] || {}),
+                    lifeCycleStatus: newStatus,
+                },
+            ],
+        });
     };
 
     const handleColorChange = (colorLabel: string) => {
@@ -163,6 +272,26 @@ export const AddWidgetForm = ({ handleNewWidget }: AddWidgetFormProps) => {
                         </label>
                     </div>
 
+                    {widgetToEdit != null && (
+                        <div>
+                            <label>
+                                Life Cycle:
+                            </label>
+                                {LifeCycleTypes.map((cycle) => (
+                                    <label key={cycle.lifeCycleId} className={"m-1"}>
+                                        <input
+                                        type={"radio"}
+                                        name={"LifeCycleStatus"}
+                                        value={cycle.lifeCycleStatus}
+                                        checked={widget.warehouseLot?.[0]?.lifeCycleStatus === cycle.lifeCycleStatus}
+                                        onChange={() => handleLifeCycleChange(cycle.lifeCycleStatus)}
+                                        />
+                                        {cycle.lifeCycleStatus}
+                                    </label>
+                                ))}
+                        </div>
+                    )}
+
                     <div>
                         <label>
                             Colors:
@@ -170,7 +299,7 @@ export const AddWidgetForm = ({ handleNewWidget }: AddWidgetFormProps) => {
                                 <label key={color.ColorId}>
                                     <input
                                         type="checkbox"
-                                        checked={widget.colors.includes(color)}
+                                        checked={widget.colors.some((c ) => c.label === color.label)}
                                         onChange={() => handleColorChange(color.label)}
                                         className="m-1"
                                     />
@@ -188,12 +317,23 @@ export const AddWidgetForm = ({ handleNewWidget }: AddWidgetFormProps) => {
                         >
                             Close
                         </button>
+                        {widgetToEdit == null && (
                         <button
                             className="border-2 bg-[#3185FC] text-white shadow-md p-1 m-2"
                             type="submit"
                         >
                             Submit
                         </button>
+                        )}
+                        {widgetToEdit != null && (
+                            <button
+                                className="border-2 bg-[#3185FC] text-white shadow-md p-1 m-2"
+                                type="submit"
+                                onClick={handleEditedWidget}
+                            >
+                                Save Changes
+                            </button>
+                        )}
                     </div>
                 </form>
             </div>

@@ -31,8 +31,8 @@ export const ImageUpload = ({
     };
 
     return (
-        <div className="flex flex-col">
-            <label className="border-2 shadow-md bg-[#3185FC] text-white p-0.5 m-2 cursor-pointer rounded-full">
+        <div>
+            <label className="border-2 shadow-md bg-[#3185FC] text-white p-0.5 m-2 cursor-pointer rounded-full w-32 text-center">
                 Select Image
                 <input
                     type="file"

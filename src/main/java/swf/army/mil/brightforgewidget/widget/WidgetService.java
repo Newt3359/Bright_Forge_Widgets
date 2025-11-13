@@ -1,19 +1,22 @@
 package swf.army.mil.brightforgewidget.widget;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import swf.army.mil.brightforgewidget.DTOs.ImageDTO;
 import swf.army.mil.brightforgewidget.DTOs.WidgetDTO;
 import swf.army.mil.brightforgewidget.Entities.*;
 import swf.army.mil.brightforgewidget.Utils.WidgetMapper;
 
+import javax.management.RuntimeErrorException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,16 +27,14 @@ public class WidgetService {
     private String uploadDir;
 
     private final WidgetRepository widgetRepository;
-    private final ColorRepository colorRepository;
     private final WidgetMapper widgetMapper;
     private final ImageRepository imageRepository;
 
 
 
-    public WidgetService (WidgetRepository widgetRepository, WidgetMapper widgetMapper, ColorRepository colorRepository, ImageRepository imageRepository){
+    public WidgetService (WidgetRepository widgetRepository, WidgetMapper widgetMapper, ImageRepository imageRepository){
         this.widgetMapper = widgetMapper;
         this.widgetRepository = widgetRepository;
-        this.colorRepository = colorRepository;
         this.imageRepository = imageRepository;
     }
 
@@ -79,27 +80,52 @@ public class WidgetService {
     }
 
     public ImageDTO saveImage(MultipartFile file, WidgetInfo widget) throws IOException {
-        // Save file to disk
+
         String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
         Path path = Paths.get(uploadDir, filename);
         Files.copy(file.getInputStream(), path);
 
-        // Save DB record
+
         Images image = new Images();
         image.setImgUrl("/uploads/" + filename);
-        image.setWidget(widget); // ✅ Attach the widget FK
+        image.setWidget(widget);
         imageRepository.save(image);
 
         return new ImageDTO(image.getImageId(), image.getImgUrl());
     }
 
     public List<WidgetDTO> searchWidgetsByTitle (String query){
-        return widgetRepository.findDistinctByTitleContainingIgnoreCase(query);
+        return widgetRepository.findDistinctByTitleContainingIgnoreCase(query)
+                .stream().map(widgetMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     public List<WidgetDTO> searchWidgetsByDescription(String query){
-        return widgetRepository.findDistinctByDescriptionContainingIgnoreCase(query);
+        return widgetRepository.findDistinctByDescriptionContainingIgnoreCase(query)
+                .stream().map(widgetMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
+    public WidgetDTO partialUpdate(WidgetDTO dto){
+
+        WidgetInfo updatedWidget = widgetMapper.toEntity(dto);
+        updatedWidget.setId(dto.id());
+        if (updatedWidget.getId() == null){
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        widgetRepository.save(updatedWidget);
+        return dto;
+    }
+
+    public void updateQuantity (Long id){
+        WidgetInfo widgetToUpdate = widgetRepository.findById(id).orElseThrow();
+        if (!widgetToUpdate.getWarehouseLot().isEmpty()){
+            Warehouse lot = widgetToUpdate.getWarehouseLot().getFirst();
+            lot.setQuantity(lot.getQuantity()-1);
+        }else {
+            throw new RuntimeException("No quantity found for widget number " + id);
+        }
+        widgetRepository.save(widgetToUpdate);
+    }
 
 }

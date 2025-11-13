@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {ColorTypes, type Widget} from "../Utils/Widget.ts";
 import {getAllWidgets} from "../Utils/YellowPages.ts";
 import {WidgetSearchAndFilter} from "../Components/WidgetSerachAndFilter.tsx";
+import axios from "axios";
 
 
 function GetWidget(){
@@ -21,20 +22,27 @@ function GetWidget(){
     const availableColors = ColorTypes.filter(c =>
         availableColorLabels.includes(c.label)
     );
-    const handleBuy = (id: number) => {
-        setWidgets(prevWidgets =>
-            prevWidgets.map(widget =>
-                widget.id === id
-                    ? {
-                        ...widget,
-                        warehouseLot: widget.warehouseLot.map(lot => ({
-                            ...lot,
-                            quantity: lot.quantity - 1
-                        }))
-                    }
-                    : widget
-            )
-        );
+    const handleBuy = async (widget: Widget) => {
+        try {
+            const response = await axios.patch(`/api/widget/qty/${widget.id}`, widget.id);
+            setWidgets(prevWidgets =>
+                prevWidgets.map(w =>
+                    w.id === widget.id
+                        ? {
+                            ...w,
+                            // Assuming quantity is in the first warehouse lot
+                            warehouseLot: w.warehouseLot.map(lot => ({
+                                ...lot,
+                                quantity: lot.quantity - 1 // subtract 1 for this purchase
+                            }))
+                        }
+                        : w
+                )
+            );
+            console.log(response);
+        } catch (error) {
+            console.error("Error updating quantity", error);
+        }
     };
 
     const handleSearchChange = (query: string) => {
@@ -51,7 +59,7 @@ function GetWidget(){
         const fetchWidgets = async () => {
             try {
                const response = await getAllWidgets()
-                console.log(response)
+                // console.log(response)
                 setWidgets(response)
             }catch (err){
                 console.log(err)
@@ -90,7 +98,12 @@ function GetWidget(){
                 <p className={"flex content-center justify-center"}>No Results Found</p>
             )}
             <div className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center items-center"}>
-                {widgetsToDisplay.map(widget => <WidgetCards key = {widget.id} widget = {widget} onBuy={(w) => handleBuy(w.id)}/>)}
+                {widgetsToDisplay.filter((widget) =>
+                    widget.warehouseLot?.[0]?.lifeCycleStatus === "Active" ||
+                    widget.warehouseLot?.[0]?.lifeCycleStatus === "OSS_Permanent"
+                ).map((widget) => (
+                    <WidgetCards key={widget.id} widget={widget} onBuy={(w) => handleBuy(w)}/>
+                ))}
             </div>
         </>
     )

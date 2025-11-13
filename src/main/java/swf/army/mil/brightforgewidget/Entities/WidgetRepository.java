@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface WidgetRepository extends JpaRepository <WidgetInfo, Long> {
 
-    List<WidgetDTO> findDistinctByTitleContainingIgnoreCase(String query);
+    List<WidgetInfo> findDistinctByTitleContainingIgnoreCase(String query);
 
-    List<WidgetDTO> findDistinctByDescriptionContainingIgnoreCase(String query);
+    List<WidgetInfo> findDistinctByDescriptionContainingIgnoreCase(String query);
 }

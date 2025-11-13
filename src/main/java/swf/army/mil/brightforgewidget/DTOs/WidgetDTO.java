@@ -13,4 +13,8 @@ public record WidgetDTO(
         List<WarehouseDTO> warehouseLot,
         List<ImageDTO> image
 ) {
+    @Override
+    public Long id() {
+        return id;
+    }
 }
