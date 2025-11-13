@@ -27,7 +27,7 @@ export const WidgetCards : React.FC<WidgetCardProps> = ({
 
     return(
         <>
-            <Card style={{width: '20rem', height: "18rem" }} className={"m-4 border border-black shadow-md"}>
+            <Card style={{width: '20rem', height: "20rem" }} className={"m-4 border border-black shadow-md"}>
 
                 {widget.image.map(img => (
                     <img

@@ -192,7 +192,7 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onEdit }: AddWidg
 
     return (
         <>
-            <div className="bg-white flex justify-center content-center border-2 shadow-md">
+            <div className="bg-white flex justify-center content-center border-2 shadow-md z-50 items-center fixed">
                 <form onSubmit={handleSubmit}>
                     <div>
                         <ImageUpload
