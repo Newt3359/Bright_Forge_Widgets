@@ -81,7 +81,7 @@ public class WidgetService {
 
     public ImageDTO saveImage(MultipartFile file, WidgetInfo widget) throws IOException {
 
-        String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String filename = file.getOriginalFilename();
         Path path = Paths.get(uploadDir, filename);
         Files.copy(file.getInputStream(), path);
 
