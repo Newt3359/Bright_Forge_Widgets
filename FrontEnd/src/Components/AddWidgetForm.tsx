@@ -19,7 +19,7 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onSave }: AddWidg
     const { widget, setWidget } = useWidget();
     const [selectedFile, setSelectedFile] = React.useState<File>();
     const [previewImage, setPreviewImage] = React.useState<string>();
-    const [progress, setProgress] = React.useState<number>(0);
+
 
     useEffect(() => {
         if (widgetToEdit) {
@@ -74,10 +74,7 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onSave }: AddWidg
                 formData.append("file", selectedFile);
                 formData.append("widgetId", createdWidget.id.toString());
 
-                await uploadImage(formData, (progressEvent) => {
-                    const percent = Math.round((100 * progressEvent.loaded) / progressEvent.total);
-                    setProgress(percent);
-                });
+                await uploadImage(formData)
             }
 
 
@@ -135,10 +132,7 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onSave }: AddWidg
                 const formData = new FormData();
                 formData.append("file", selectedFile);
                 formData.append("widgetId", updatedWidget.id.toString());
-                await uploadImage(formData, (progressEvent) => {
-                    const percent = Math.round((100 * progressEvent.loaded) / progressEvent.total);
-                    setProgress(percent);
-                });
+                await uploadImage(formData)
             }
 
             setWidget(updatedWidget);

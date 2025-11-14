@@ -12,10 +12,9 @@ export const getAllWidgets = async () : Promise<any> => {
     return result.data
 }
 
-export const uploadImage = (formData: FormData, onUploadProgress?: (event: any) => void) => {
+export const uploadImage = (formData: FormData) => {
     return axios.post(`/api/widget/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress,
     });
 };
 
