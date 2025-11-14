@@ -22,5 +22,3 @@ export const updateWidget = async  (widget:Widget): Promise<Widget> => {
     const result = await axios.patch('/api/widget/' + widget.id, widget)
     return result.data
 }
-
-

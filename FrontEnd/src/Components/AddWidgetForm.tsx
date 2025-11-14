@@ -52,17 +52,21 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onSave }: AddWidg
             return;
         }
 
+        const now = new Date()
         const payload = {
             ...widget,
             slug: `${widget.title}-${widget.rating}`,
             warehouseLot: [
                 {
                     ...(widget.warehouseLot?.[0] || {}),
-                    created: Date.now().toString(),
+                    created: now.toISOString(),
                     lifeCycleStatus: widget.warehouseLot?.[0]?.lifeCycleStatus || "Active",
                 },
             ],
         };
+
+        console.log(payload)
+
 
         try {
 
@@ -115,13 +119,14 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onSave }: AddWidg
             return;
         }
 
+        const now = new Date()
         const payload = {
             ...widget,
             widget: widget.id,
             warehouseLot: [
                 {
                 ...(widget.warehouseLot?.[0] || {}),
-                lastEdit: Date.now().toString()
+                lastEdit: now.toISOString()
                 },
             ],
         }
