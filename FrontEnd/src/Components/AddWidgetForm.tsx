@@ -1,5 +1,5 @@
 import * as React from "react";
-import {getAllWidgets, updateWidget, uploadImage, widgetFormSubmit} from "../Utils/YellowPages.ts";
+import {updateWidget, uploadImage, widgetFormSubmit} from "../Utils/YellowPages.ts";
 import {ImageUpload} from "./ImageUpload.tsx";
 import {useWidget} from "../Utils/WidgetContext.tsx";
 import {widgetChecker} from "../Utils/WidgetChecker.ts";
@@ -12,10 +12,10 @@ import {useEffect} from "react";
 interface AddWidgetFormProps {
     handleNewWidget: () => void;
     widgetToEdit?: Widget | null;
-    onEdit?: (widget:Widget) => void
+    onSave?: () => void;
 }
 
-export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onEdit }: AddWidgetFormProps) => {
+export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onSave }: AddWidgetFormProps) => {
     const { widget, setWidget } = useWidget();
     const [selectedFile, setSelectedFile] = React.useState<File>();
     const [previewImage, setPreviewImage] = React.useState<string>();
@@ -82,8 +82,9 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onEdit }: AddWidg
 
 
             setWidget(createdWidget);
-
             alert("Widget created successfully!");
+            if (onSave) onSave();
+
         } catch (err: any) {
             console.error("Error creating widget:", err);
             alert("Failed to create widget. Check console for details.");
@@ -141,7 +142,9 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onEdit }: AddWidg
             }
 
             setWidget(updatedWidget);
-            alert("Widget updated successfully!")
+            alert("Widget updated successfully!");
+            if (onSave) onSave();
+
         } catch (err: any) {
             console.error("Error updating widget:", err);
             alert("Failed to update widget. Check console for details.");
@@ -328,7 +331,7 @@ export const AddWidgetForm = ({ handleNewWidget, widgetToEdit, onEdit }: AddWidg
                         {widgetToEdit != null && (
                             <button
                                 className="border-2 bg-[#3185FC] text-white shadow-md p-1 m-2"
-                                type="submit"
+                                type="button"
                                 onClick={handleEditedWidget}
                             >
                                 Save Changes

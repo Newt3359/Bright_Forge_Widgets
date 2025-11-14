@@ -1,4 +1,3 @@
-
 import {AddWidgetForm} from "../Components/AddWidgetForm.tsx";
 import {WidgetManager} from "../Utils/WidgetContext.tsx";
 import {WidgetCards} from "../Components/WidgetCards.tsx";
@@ -35,6 +34,14 @@ function WorkShop(){
         fetchWidgets()
     }, [])
 
+    const fetchWidgets = async () => {
+        try {
+            const response = await getAllWidgets();
+            setWidgets(response);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
 
     return(
@@ -46,7 +53,15 @@ function WorkShop(){
                 </div>
                 {showForm && (
                     <div className={"flex content-center justify-center"}>
-                        <AddWidgetForm handleNewWidget={handleNewWidget} widgetToEdit={selectedWidget} onEdit={handleEdit}/>
+                        <AddWidgetForm
+                            handleNewWidget={handleNewWidget}
+                            widgetToEdit={selectedWidget}
+                            onEdit={handleEdit}
+                            onSave={async () => {
+                                await fetchWidgets();
+                                setShowForm(false);
+                            }}
+                        />
                     </div>
                 )}
                 <div className={"grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center items-center"}>
